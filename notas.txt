@@ -1,0 +1,15 @@
+Variable Estado_civil se va a transformas en una dummy de si el individuo tiene pareja,
+de modo que las respuestas union libre y casado seria 1 .... mientras que divorciado,
+viudo y soltero serian 0
+
+
+La vatriable etnia hay dos opciones o hacer 7 dummys exceptuando la respuesta de ninguna de las anteriores 
+para evitar la trampa dummy o por otro lado que los datos refieran a una pregunta tipo ¿ pertenece usted alguno de los 
+siguientes grupos etnicos?
+
+
+De la pregunta PU46 a PU52 se podria realizar una dummy donde la pregunta sea si el individuo sufre algunas de esas
+discapacitades enunciadas en essa preguntas .... seria 1 para que sufre alguna de esas y 0 para que no.
+(esta sera la Variable Discapacidad)
+
+
