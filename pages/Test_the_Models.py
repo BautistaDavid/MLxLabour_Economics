@@ -5,6 +5,7 @@ import seaborn as sns
 import numpy as np 
 import pickle as pkl 
 from utils import yes_no_variable
+from pages.graphs import pie_probe
 
 ciudades=pd.read_csv("data/dpts.csv",sep=";") 
 ciudades=list(ciudades["Nombre"])
@@ -80,8 +81,34 @@ def write():
     variables.extend(ethnic)
     variables.extend(array_country)
 
+    
     pred_proba=lr.predict_proba([variables])
+    # st.text(list(pred_proba[0]))     
+
+    fig=pie_probe([list(pred_proba[0]*100)[1],list(pred_proba[0]*100)[1]])
+
+
+
+
+    # fig, ax = plt.subplots(figsize=(4, 4))
+    # data = [list(pred_proba[0]*100)[1],list(pred_proba[0]*100)[1]]
+    # wedgeprops = {'width':0.3, 'edgecolor':'black', 'lw':3}
+    # patches, _ = ax.pie(data, wedgeprops=wedgeprops, startangle=90, colors=['#5DADE2', 'white'])
+    # patches[1].set_zorder(0) 
+    # patches[1].set_edgecolor('black')
+    # plt.title('Worldwide Access to Electricity', fontsize=16, loc='left')
+    # plt.text(0, 0, "{0:.2f}%".format(data[0]), ha='center', va='center', fontsize=30)
+    # plt.text(-1.2, -1.3, "", ha='left', va='top', fontsize=12)
+    # plt.show()
+
+
+
+    st.pyplot(fig)
+
+
+    
     st.write(pred_proba)
+    
 
 
     # # ESPACIO PARA CREAR LA GRAFIca
