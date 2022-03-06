@@ -5,7 +5,7 @@ import seaborn as sns
 import numpy as np 
 import pickle as pkl 
 from utils import yes_no_variable
-from models import scaler_variable_to_predict
+from models.reg_logistic import scaler_variable_to_predict
 
 ciudades=pd.read_csv("data/dpts.csv",sep=";") 
 ciudades=list(ciudades["Nombre"])
@@ -80,7 +80,7 @@ def write():
         else:
             array_country.append(0)
 
-    lr_pickle=open("lr_clf.pickle","rb")
+    lr_pickle=open("models/lr_clf.pickle","rb")
     lr=pkl.load(lr_pickle)
     lr_pickle.close()
 
