@@ -39,7 +39,7 @@ def dic_dtypes():
     return dtype
 
 def variables_modelo():
-    variables=["id","id_hogar","ocupado","desocupado","P6020","P6040","ESC","P6080","P6070","P6170","P4030S1A1","P5210S16","P6081","P6083","DPTO_x"]
+    variables=["id","id_hogar","ocupado","desocupado","P6020","P6040","ESC","P6080","P6070","P6170","P4030S1A1","P5210S16","P5210S3","P6081","P6083","DPTO_x"]
     return variables
 
 

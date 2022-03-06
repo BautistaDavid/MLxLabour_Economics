@@ -5,7 +5,7 @@ import seaborn as sns
 import numpy as np 
 import pickle as pkl 
 from utils import yes_no_variable
-from pages.graphs import pie_probe
+from models import scaler_variable_to_predict
 
 ciudades=pd.read_csv("data/dpts.csv",sep=";") 
 ciudades=list(ciudades["Nombre"])
@@ -22,26 +22,34 @@ def write():
     st.markdown(info)
 
     
-    col1,col2=st.columns(2)
+    col1,col2,col3=st.columns(3)
     with col1:
         gender=st.selectbox("Gender:",("Male","Female"))
         age=st.number_input("Age:",min_value=(13))
         schooling=st.number_input("Years of Schooling:",min_value=(0))
         couple=st.selectbox("Couple:",("Yes","No"))
-        student=st.selectbox("Are you currently a student?",("Yes","No"))
-
+        
     with col2:
+        student=st.selectbox("Are you currently a student?",("Yes","No"))
         stratum=st.number_input("Social Stratum:",min_value=0,max_value=6)
         pc=st.selectbox("Do you have a personal PC?",("Yes","No"))
+        internet=st.selectbox("Do you have internet?",("Yes","No"))
+
+    with col3:
         fathers=st.selectbox("With whom of your fathers do you live?",("Mother","Dad","Both of them","None"))
         ethnicity=st.selectbox("With what ethnic group do you feel recognized?",("Afro-descendant","Gypsy","Indigenous","Palenquero","Raizal","No ethnic recognition"))    
         country=st.selectbox("Select your town:",ciudades)
+        fig, ax = plt.subplots(figsize=(4, 4))
+
 
     
     gender=yes_no_variable(gender)
     couple=yes_no_variable(couple)
     student=yes_no_variable(student)
     pc=yes_no_variable(pc)
+    internet = yes_no_variable(internet)
+    menor_padres = 1 if age <= 18 and (fathers !="None") else 0
+
 
     list_ethnic=["Afro-descendant","Gypsy","Indigenous","Palenquero","No ethnic recognition"]
 
@@ -76,20 +84,33 @@ def write():
     lr=pkl.load(lr_pickle)
     lr_pickle.close()
 
-    variables=[gender,age,schooling,couple,student,stratum,pc]
+    variables=[gender,age,schooling,couple,student,stratum,pc,internet]
     variables.extend(array_fathers)
     variables.extend(ethnic)
     variables.extend(array_country)
+    variables.extend([menor_padres])
 
     
-    pred_proba=lr.predict_proba([variables])
+    pred_proba=list(lr.predict_proba(scaler_variable_to_predict([variables])))[0]
+    # st.text(pred_proba)
     # st.text(list(pred_proba[0]))     
+    
+    col1, col2 = st.columns(2)
 
-    fig=pie_probe([list(pred_proba[0]*100)[1],list(pred_proba[0]*100)[1]])
+    with col1:
 
-
-
-
+        fig, ax = plt.subplots(figsize=(4, 4))
+        data = [(pred_proba[0]*100),(pred_proba[1]*100)]
+        wedgeprops = {'width':0.3, 'edgecolor':'black', 'lw':3}
+        patches, _ = ax.pie(data, wedgeprops=wedgeprops, startangle=90, colors=['white','#5DADE2'])
+        patches[1].set_zorder(0) 
+        patches[1].set_edgecolor('black')
+        plt.title('', fontsize=16, loc='left')
+        plt.text(0, 0, "{0:.2f}%".format(data[1]), ha='center', va='center', fontsize=30)
+        plt.text(-1.2, -1.3, "", ha='left', va='top', fontsize=12)
+        plt.show()
+        st.pyplot(fig)
+    
     # fig, ax = plt.subplots(figsize=(4, 4))
     # data = [list(pred_proba[0]*100)[1],list(pred_proba[0]*100)[1]]
     # wedgeprops = {'width':0.3, 'edgecolor':'black', 'lw':3}
@@ -100,10 +121,7 @@ def write():
     # plt.text(0, 0, "{0:.2f}%".format(data[0]), ha='center', va='center', fontsize=30)
     # plt.text(-1.2, -1.3, "", ha='left', va='top', fontsize=12)
     # plt.show()
-
-
-
-    st.pyplot(fig)
+        # st.pyplot(fig)
 
 
     

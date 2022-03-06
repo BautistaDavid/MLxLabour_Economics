@@ -1,3 +1,5 @@
 /venv
 /sets_model
+/data/compiling_data.py
+/sql_connect.py
 
