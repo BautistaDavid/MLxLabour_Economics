@@ -49,6 +49,15 @@ def write():
     pc=yes_no_variable(pc)
     internet = yes_no_variable(internet)
     menor_padres = 1 if age <= 18 and (fathers !="None") else 0
+    age_2 = age**2
+    schooling_2 = schooling**2
+    # variables dummy artificiales 
+    art_0_18_student = 1 if age <=18 and student == 1 else 0 
+    art_19_23_student = 1 if (age > 18 and age <= 23) and student == 1 else 0
+    art_24_27_student = 1 if (age > 23 and age <=27) and student == 1 else 0 
+    art_28_30_student = 1 if (age > 27 and age <=30) and student ==1 else 0
+    art_menor_no_student = 1 if age <= 18 and student==0 else 0
+    art_menor_no_student_estrato = art_menor_no_student * stratum
 
 
     list_ethnic=["Afro-descendant","Gypsy","Indigenous","Palenquero","No ethnic recognition"]
@@ -88,9 +97,11 @@ def write():
     variables.extend(array_fathers)
     variables.extend(ethnic)
     variables.extend(array_country)
-    variables.extend([menor_padres])
-
+    variables.extend([menor_padres,age_2,schooling_2,art_0_18_student,art_19_23_student ,art_24_27_student,art_28_30_student,art_menor_no_student,art_menor_no_student_estrato ])
     
+
+
+
     pred_proba=list(lr.predict_proba(scaler_variable_to_predict([variables])))[0]
     # st.text(pred_proba)
     # st.text(list(pred_proba[0]))     
